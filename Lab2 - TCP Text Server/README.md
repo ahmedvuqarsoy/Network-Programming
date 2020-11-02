@@ -4,12 +4,25 @@
 
 ## Description
 
+It is console app. We can send two types of mode from client terminal to the server
+
+**Change Text**:
+- We send our text and which words to change in .json format. The server will do it and sends the processed text back to us.
+
+**Encoder/Decoder**:
+- We send our text and key file. The server will do it in XOR and then sends the processed text back to us (client).
+
 ## Requirements
+
+- Pyhton3
+- Windows/\*nix OS
 
 ## Installation
 
 ```
-
+git clone https://github.com/ahmedvuqarsoy/Network-Programming.git
+cd "Lab2 - TCP Text Server"
+pip install -r requirements.txt
 ```
 
 ## Usage
