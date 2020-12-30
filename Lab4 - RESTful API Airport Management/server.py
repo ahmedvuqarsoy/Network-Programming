@@ -7,6 +7,7 @@ import json
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SESSION-MANAGER-ADMIN'] = False
 api = Api(app)
 db = SQLAlchemy(app)
 
@@ -85,6 +86,69 @@ api.add_resource(FlightData,'/flights/<string:source>/<string:destination>')
 #     print("Welcome to the Dashboard")
 # else:
 #     print("Incorrect credentials")
+
+
+# ---------- LOGIN ----------#
+authArgs = reqparse.RequestParser()
+authArgs.add_argument('username', type=str, help="Username of the authenticated user.", required=True)
+authArgs.add_argument('password', type=str, help="Password of the authenticated user.", required=True)
+
+class Login(Resource):
+    def get(self):
+        print(app.config['SESSION-MANAGER-ADMIN'])
+        return {'authenticated': app.config['SESSION-MANAGER-ADMIN']}
+
+    def post(self):
+        args = authArgs.parse_args()
+        user = User.query.filter_by(username=args['username'], password=args['password']).first()
+        if(user):
+            app.config['SESSION-MANAGER-ADMIN'] = True
+            return {'authenticated': app.config['SESSION-MANAGER-ADMIN']}
+        else:
+            return {'authenticated': app.config['SESSION-MANAGER-ADMIN']}
+
+api.add_resource(Login, '/authentication_authorization')
+# ---------- ----- ----------#
+
+
+# ---------- LOGOUT ----------#
+class Logout(Resource):
+    def get(self):
+        app.config['SESSION-MANAGER-ADMIN'] = False
+        return {'authenticated': app.config['SESSION-MANAGER-ADMIN']}
+
+api.add_resource(Logout, '/end_session')
+# ---------- ------ ----------#
+
+
+
+# ---------- ADD/DELETE/UPDATE ----------#
+addFlightFields = {
+    'id': fields.Integer,
+    'source': fields.String,
+    'destination': fields.String,
+    'info': fields.String,
+    'passengers': fields.Integer,
+    'arrival': fields.DateTime,
+    'departure': fields.DateTime
+}
+
+class ManipulateFlight(Resource):
+    def post(self):
+        pass
+
+    def patch(self):
+        pass
+
+    def delete(self);
+        pass
+
+
+
+
+
+
+# ---------- ----------------- ----------#
 
 
 if __name__ == '__main__':
