@@ -140,6 +140,16 @@ postArgs.add_argument('passengers', type=int, help="The Number of Passengers", r
 postArgs.add_argument('arrival', type=str, help="Arrivval Time and Date (2020-12-31 23:00:00)", required=True)
 postArgs.add_argument('departure', type=str, help="Departure Time and Date (2020-12-31 23:00:00)", required=True)
 
+
+putArgs = reqparse.RequestParser()
+putArgs.add_argument('id', type=int, help="The Number of Passengers")
+putArgs.add_argument('source', type=str, help="Source City (like: Baku)")
+putArgs.add_argument('destination', type=str, help="Destination City (like: Baku)")
+putArgs.add_argument('info', type=str, help="Information about Flight (like: Business)")
+putArgs.add_argument('passengers', type=int, help="The Number of Passengers")
+putArgs.add_argument('arrival', type=str, help="Arrivval Time and Date (2020-12-31 23:00:00)")
+putArgs.add_argument('departure', type=str, help="Departure Time and Date (2020-12-31 23:00:00)")
+
 class ManipulateFlight(Resource):
 
     def post(self):
@@ -150,7 +160,31 @@ class ManipulateFlight(Resource):
         return {'request': 'POST request is successful.'}, 201
 
     def put(self):
-        pass
+        args = putArgs.parse_args()
+        id = args['id']
+        flight = Flight.query.filter_by(id=id).first()
+        if(flight):
+            if args['source']:
+                flight.source = args['source']
+            if args['destination']:
+                flight.destination = args['destination']
+            if args['info']:
+                flight.info = args['info']
+            if args['passengers']:
+                flight.passengers = args['passengers']
+            if args['arrival']:
+                flight.arrival = args['arrival']
+            if args['departure']:
+                flight.departure = args['departure']
+
+            
+            db.session.commit()
+
+            return {'200': 'The file is updated.'}
+        
+        else:
+            abort(404, f"The flight with ID Number {id} cannot found.")
+
 
     def delete(self):
         pass

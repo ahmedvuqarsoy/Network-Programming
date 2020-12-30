@@ -25,7 +25,14 @@ BASE = "http://127.0.0.1:5000"
 
 
 # ADD DATA
+# LINK = BASE + '/flights'
+# print(LINK)
+# response = requests.post(LINK, {'source': 'Istanbul', 'destination': 'Paris', 'info': 'New Year', 'passengers': 333, 'arrival': '2020-12-31 23:00:00', 'departure': '2020-12-31 23:00:00'})
+# print(response.json())
+
+
+# UPDATE DATA
 LINK = BASE + '/flights'
 print(LINK)
-response = requests.post(LINK, {'source': 'Istanbul', 'destination': 'Paris', 'info': 'New Year', 'passengers': 333, 'arrival': '2020-12-31 23:00:00', 'departure': '2020-12-31 23:00:00'})
+response = requests.put(LINK, {'id': 7, 'passengers': 1000})
 print(response.json())
