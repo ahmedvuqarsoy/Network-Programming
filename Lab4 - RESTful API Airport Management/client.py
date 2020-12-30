@@ -32,7 +32,14 @@ BASE = "http://127.0.0.1:5000"
 
 
 # UPDATE DATA
+# LINK = BASE + '/flights'
+# print(LINK)
+# response = requests.put(LINK, {'id': 7, 'passengers': 1000})
+# print(response.json())
+
+
+# DELETE DATA
 LINK = BASE + '/flights'
 print(LINK)
-response = requests.put(LINK, {'id': 7, 'passengers': 1000})
+response = requests.delete(LINK, data={'id': 7})
 print(response.json())

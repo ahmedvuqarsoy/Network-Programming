@@ -142,13 +142,16 @@ postArgs.add_argument('departure', type=str, help="Departure Time and Date (2020
 
 
 putArgs = reqparse.RequestParser()
-putArgs.add_argument('id', type=int, help="The Number of Passengers")
+putArgs.add_argument('id', type=int, help="The ID Number of Flight")
 putArgs.add_argument('source', type=str, help="Source City (like: Baku)")
 putArgs.add_argument('destination', type=str, help="Destination City (like: Baku)")
 putArgs.add_argument('info', type=str, help="Information about Flight (like: Business)")
 putArgs.add_argument('passengers', type=int, help="The Number of Passengers")
 putArgs.add_argument('arrival', type=str, help="Arrivval Time and Date (2020-12-31 23:00:00)")
 putArgs.add_argument('departure', type=str, help="Departure Time and Date (2020-12-31 23:00:00)")
+
+delArgs = reqparse.RequestParser()
+delArgs.add_argument('id', type=int, help="The ID Number of Flight")
 
 class ManipulateFlight(Resource):
 
@@ -187,7 +190,15 @@ class ManipulateFlight(Resource):
 
 
     def delete(self):
-        pass
+        args = delArgs.parse_args()
+        id = args['id']
+        flight = Flight.query.filter_by(id=id).first()
+        if(flight):
+            db.session.delete(flight)
+            db.session.commit()
+            return {'200': 'The flight is deleted.'}
+        else:
+            abort(404, f"The flight with ID Number {id} cannot found.")
 
 
 api.add_resource(ManipulateFlight, '/flights')
