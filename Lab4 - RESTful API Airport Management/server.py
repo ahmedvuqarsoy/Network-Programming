@@ -27,8 +27,8 @@ class Flight(db.Model):
     destination = db.Column(db.String(100), nullable=False)
     info = db.Column(db.String(100), nullable=False)
     passengers = db.Column(db.Integer, nullable=False)
-    arrival = db.Column(db.DateTime, nullable=False, default=datetime.now)
-    departure = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    arrival = db.Column(db.String(100), nullable=False, default=datetime.now)
+    departure = db.Column(db.String(100), nullable=False, default=datetime.now)
 
     def __repr__(self):
         return f"Flight(source = {self.source}, destination = {self.destination}, info = {self.info}, passengers = {self.passengers}, arrival = {self.arrival}, destination = {self.destination}"
@@ -124,7 +124,6 @@ api.add_resource(Logout, '/end_session')
 
 # ---------- ADD/DELETE/UPDATE ----------#
 addFlightFields = {
-    'id': fields.Integer,
     'source': fields.String,
     'destination': fields.String,
     'info': fields.String,
@@ -133,18 +132,31 @@ addFlightFields = {
     'departure': fields.DateTime
 }
 
+postArgs = reqparse.RequestParser()
+postArgs.add_argument('source', type=str, help="Source City (like: Baku)", required=True)
+postArgs.add_argument('destination', type=str, help="Destination City (like: Baku)", required=True)
+postArgs.add_argument('info', type=str, help="Information about Flight (like: Business)", required=True)
+postArgs.add_argument('passengers', type=int, help="The Number of Passengers", required=True)
+postArgs.add_argument('arrival', type=str, help="Arrivval Time and Date (2020-12-31 23:00:00)", required=True)
+postArgs.add_argument('departure', type=str, help="Departure Time and Date (2020-12-31 23:00:00)", required=True)
+
 class ManipulateFlight(Resource):
+
     def post(self):
+        args = postArgs.parse_args()
+        flight = Flight(source=args['source'], destination=args['destination'], info=args['info'], passengers=args['passengers'], arrival=args['arrival'], departure=args['departure'])
+        db.session.add(flight)
+        db.session.commit()
+        return {'request': 'POST request is successful.'}, 201
+
+    def put(self):
         pass
 
-    def patch(self):
-        pass
-
-    def delete(self);
+    def delete(self):
         pass
 
 
-
+api.add_resource(ManipulateFlight, '/flights')
 
 
 
