@@ -12,14 +12,6 @@ api = Api(app)
 db = SQLAlchemy(app)
 
 
-# SESSION AUTHENTICATION
-AUTHENTICATED = False
-
-
-# HELPER FUNCTION
-
-
-
 # MODELS for DB
 class Flight(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -30,9 +22,7 @@ class Flight(db.Model):
     arrival = db.Column(db.String(100), nullable=False, default=datetime.now)
     departure = db.Column(db.String(100), nullable=False, default=datetime.now)
 
-    def __repr__(self):
-        return f"Flight(source = {self.source}, destination = {self.destination}, info = {self.info}, passengers = {self.passengers}, arrival = {self.arrival}, destination = {self.destination}"
-
+    
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False)
@@ -49,43 +39,32 @@ flightArgs.add_argument('passengers', type=int, help="Destination Point of the F
 
 
 
-# fields (to Change Object -> JSON (Serialazing))
+# ---------- GET FLIGHT DATA ----------#
 flightDataFields = {
     'id': fields.Integer,
     'source': fields.String,
     'destination': fields.String,
     'info': fields.String,
     'passengers': fields.Integer,
-    'arrival': fields.DateTime,
-    'departure': fields.DateTime
+    'arrival': fields.String,
+    'departure': fields.String
 }
 
-# RESTful Resources
 class FlightData(Resource):
     @marshal_with(flightDataFields)
     def get(self, source, destination):
         flightList = Flight.query.filter_by(source=source, destination=destination).all()
-        print(flightList)
         return flightList
 
-
-
 api.add_resource(FlightData,'/flights/<string:source>/<string:destination>')
+# ---------- GET FLIGHT DATA ----------#
+
 
 
 # db.create_all()
 # flight1 = Flight(source='Istanbul', destination='Baku', info='VIP Flight', passengers=300)
 # db.session.add(flight1)
 # db.session.commit()
-
-# username = input("Please Write Your Username: ")
-# password = input("Please Type Your Password: ")
-# authenticate = User.query.filter_by(username=username, password=password).first()
-# if authenticate:
-#     AUTHENTICATED = True
-#     print("Welcome to the Dashboard")
-# else:
-#     print("Incorrect credentials")
 
 
 # ---------- LOGIN ----------#
