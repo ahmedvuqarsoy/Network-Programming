@@ -2,6 +2,14 @@
 
 
 
+## Installation
+
+```
+$ git clone https://github.com/ahmedvuqarsoy/Network-Programming.git
+```
+
+
+
 ## Information
 
 This application is client-server-based RESTful **Airport Management System**.
@@ -15,8 +23,6 @@ The project contains three files.
 3. Admin.py
 
 
-
-## Installation
 
 
 
@@ -52,6 +58,31 @@ SQLAlchemy==1.3.22
 urllib3==1.26.2
 Werkzeug==1.0.1
 ```
+
+
+
+## Our Database Model
+
+
+
+### User Table (Admins)
+
+|  id  | username  |          email          | password |
+| :--: | :-------: | :---------------------: | :------: |
+|  1   |   admin   |     admin@gmail.com     |  admin   |
+|  2   |   root    |    root@example.com     |   toor   |
+|  3   | hajiahmad | ahmedvuqarsoy@gmail.com |  123456  |
+
+
+
+### Flight Table
+
+|  id  | source  | destination |   info   | passengers |       arrival       |      departure      |
+| :--: | :-----: | :---------: | :------: | :--------: | :-----------------: | :-----------------: |
+|  1   | NewYork |    Qatar    | Ramadan  |    250     | 2020-12-30 23:00:00 | 2020-12-30 23:00:00 |
+|  2   | NewYork |    Doha     |   VIP    |    120     | 2020-12-30 23:00:00 | 2020-12-30 23:00:00 |
+|  3   |  Baku   |    Pekin    | NewYear  |    333     | 2020-12-30 23:00:00 | 2020-12-30 23:00:00 |
+|  4   |  Baku   |   Moscow    | Business |    500     | 2020-12-30 23:00:00 | 2020-12-30 23:00:00 |
 
 
 
